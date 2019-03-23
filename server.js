@@ -1,28 +1,60 @@
 /**
  * usando express como servidor web
  */
+    const express = require('express')
+    const app = express()
+    const hbs = require('hbs');
+    require ('./hbs/helpers');
 
-
-const express = require('express')
-const app = express()
+/**
+ * Configuracion para heroku
+ */
+    const port = process.env.PORT || 3000
 
 /**
  * Creamos un middleware para ver la pagna web de publilc
  */
 
- app.use(express.static(__dirname+ '/public'))
- 
-// app.get('/',  (req, res) => {
-//     let salida = {
-//         nombre: 'Fleury',
-//         edad: 34,
-//         url: req.url
-//     }
+    app.use(express.static(__dirname+ '/public'));
 
-//     res.send(salida);
-// })
+
+ /**
+  * Este motor HBS es como usar cualqueir framework de front es similar a handlebars
+  */
+
+ //EXpress HBS engine
+
+    hbs.registerPartials(__dirname + '/views/partials');
+    app.set('view engine', 'hbs');
+    
+
+
+
+    app.get('/',  (req, res) => {
+
+        /**
+         * vamos a usar un template engine
+         */
+
+        res.render('home',{
+            nombre: 'Fleury',
+            
+        });
+    });
+
+    app.get('/about',  (req, res) => {
+        
+        /**
+         * vamos a usar un template engine
+         */
+
+        res.render('about',{
+            nombre: 'Fleury',
+
+        });
+    });
 
  
-app.listen(3000, ()=>{
-    console.log('Escuchando peticiones en el puerto 3000')
-})
+    app.listen(port, ()=>{
+        console.log(`Escuchando peticiones en el puerto ${port}`)
+    })
